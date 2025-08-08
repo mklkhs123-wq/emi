@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Smart Finance App</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app" id="app">
+    <aside class="sidebar" role="navigation" aria-label="Main Menu">
+      <header>
+        <h1>Smart Finance</h1>
+      </header>
+      <nav>
+        <button data-target="emi" class="active">EMI Calculator</button>
+        <button data-target="fd">FD Calculator</button>
+        <button data-target="sip">SIP Calculator</button>
+        <button data-target="rd">RD Calculator</button>
+        <button data-target="ppf">PPF Calculator</button>
+        <button data-target="currency">Currency Converter</button>
+        <button data-target="news">Finance News</button>
+        <button data-target="companies">Indian Finance Companies</button>
+        <button id="loanCheckBtn">Loan Check</button>
+        <button id="paymentBtn">Payment / UPI</button>
+        <button id="privacyBtn">Privacy Policy</button>
+      </nav>
+      <footer>
+        <small>Light mode • Mobile-friendly</small>
+      </footer>
+    </aside>
+
+    <main class="content" id="content" role="main">
+      <!-- EMI -->
+      <section id="emi" class="panel">
+        <h2>EMI Calculator</h2>
+        <form id="emiForm">
+          <label>Loan Amount (₹)<input type="number" id="emi-principal" min="0" required></label>
+          <label>Annual Interest Rate (%)<input type="number" id="emi-rate" step="0.01" min="0" required></label>
+          <label>Tenure (months)<input type="number" id="emi-tenure" min="1" required></label>
+          <div class="row"><button type="submit">Calculate EMI</button><button type="button" id="emiReset">Reset</button></div>
+        </form>
+        <div id="emiResult" class="result" aria-live="polite"></div>
+      </section>
+
+      <!-- FD -->
+      <section id="fd" class="panel hidden">
+        <h2>FD Calculator</h2>
+        <form id="fdForm">
+          <label>Deposit Amount (₹)<input type="number" id="fd-principal" min="0" required></label>
+          <label>Annual Interest Rate (%)<input type="number" id="fd-rate" step="0.01" min="0" required></label>
+          <label>Tenure (years)<input type="number" id="fd-years" min="0.01" step="0.01" required></label>
+          <label>Compounding (per year)
+            <select id="fd-comp">
+              <option value="1">Annually</option>
+              <option value="2">Half-yearly</option>
+              <option value="4">Quarterly</option>
+              <option value="12">Monthly</option>
+            </select>
+          </label>
+          <div class="row"><button type="submit">Calculate Maturity</button><button type="button" id="fdReset">Reset</button></div>
+        </form>
+        <div id="fdResult" class="result" aria-live="polite"></div>
+      </section>
+
+      <!-- SIP -->
+      <section id="sip" class="panel hidden">
+        <h2>SIP Calculator</h2>
+        <form id="sipForm">
+          <label>Monthly SIP (₹)<input type="number" id="sip-amt" min="0" required></label>
+          <label>Expected Annual Return (%)<input type="number" id="sip-rate" step="0.01" min="0" required></label>
+          <label>Investment Period (years)<input type="number" id="sip-years" min="0.1" step="0.1" required></label>
+          <div class="row"><button type="submit">Calculate SIP</button><button type="button" id="sipReset">Reset</button></div>
+        </form>
+        <div id="sipResult" class="result" aria-live="polite"></div>
+      </section>
+
+      <!-- RD -->
+      <section id="rd" class="panel hidden">
+        <h2>RD Calculator</h2>
+        <form id="rdForm">
+          <label>Monthly Deposit (₹)<input type="number" id="rd-amt" min="0" required></label>
+          <label>Annual Interest Rate (%)<input type="number" id="rd-rate" step="0.01" min="0" required></label>
+          <label>Tenure (months)<input type="number" id="rd-months" min="1" required></label>
+          <div class="row"><button type="submit">Calculate RD</button><button type="button" id="rdReset">Reset</button></div>
+        </form>
+        <div id="rdResult" class="result" aria-live="polite"></div>
+      </section>
+
+      <!-- PPF -->
+      <section id="ppf" class="panel hidden">
+        <h2>PPF Calculator</h2>
+        <form id="ppfForm">
+          <label>Annual Contribution (₹)<input type="number" id="ppf-amt" min="0" required></label>
+          <label>Annual Interest Rate (%)<input type="number" id="ppf-rate" step="0.01" min="0" required></label>
+          <label>Tenure (years)<input type="number" id="ppf-years" min="1" required></label>
+          <div class="row"><button type="submit">Calculate PPF</button><button type="button" id="ppfReset">Reset</button></div>
+        </form>
+        <div id="ppfResult" class="result" aria-live="polite"></div>
+      </section>
+
+      <!-- Currency -->
+      <section id="currency" class="panel hidden">
+        <h2>Currency Converter (Live rates)</h2>
+        <div class="row wrap">
+          <input type="number" id="curAmount" value="1" min="0" step="any" aria-label="Amount">
+          <select id="curFrom" aria-label="From currency"></select>
+          <select id="curTo" aria-label="To currency"></select>
+          <button id="convertBtn">Convert</button>
+        </div>
+        <div id="curResult" class="result" aria-live="polite"></div>
+      </section>
+
+      <!-- News -->
+      <section id="news" class="panel hidden">
+        <h2>Finance News (India)</h2>
+        <div id="newsList">Loading news…</div>
+      </section>
+
+      <!-- Companies -->
+      <section id="companies" class="panel hidden">
+        <h2>Indian Finance Companies</h2>
+        <input id="companyFilter" placeholder="Search companies..." aria-label="Search companies" />
+        <ul id="companiesList"></ul>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Privacy Policy Modal -->
+  <div id="privacyModal" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="modal-content">
+      <h3>Privacy Policy</h3>
+      <p>This app runs fully on your device except the live currency/news fetches. We do not store user inputs on any server. When you use live features we call public APIs (third-party). Use at your own discretion. For production, replace any 3rd-party endpoints with secure server-side proxies if needed.</p>
+      <button id="closePrivacy">Close</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
